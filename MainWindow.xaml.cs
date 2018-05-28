@@ -337,9 +337,7 @@ namespace Microsoft.Samples.Kinect.BodyBasics
                     int penIndex = 0;
 
                     //=======================================================
-                    CameraSpacePoint SpinShoulderPosition;
-                    CameraSpacePoint HandLeftPosition;
-                    CameraSpacePoint HandRightPosition;
+
                     //=======================================================
 
 
@@ -350,7 +348,6 @@ namespace Microsoft.Samples.Kinect.BodyBasics
                         if (body.IsTracked)
                         {
                             this.DrawClippedEdges(body, dc);
-
                             IReadOnlyDictionary<JointType, Joint> joints = body.Joints;
 
                             // convert the joint points to depth (display) space
@@ -358,7 +355,15 @@ namespace Microsoft.Samples.Kinect.BodyBasics
 
 
                             //===========================================================================
+                            CameraSpacePoint SpinShoulderPosition;
+                            CameraSpacePoint HandLeftPosition;
+                            CameraSpacePoint HandRightPosition;
+                            CameraSpacePoint ElbowRightPosition;
+                            CameraSpacePoint ElbowLeftPosition;
+                 
                             SpinShoulderPosition = joints[JointType.SpineShoulder].Position;
+                            ElbowRightPosition = joints[JointType.ElbowRight].Position;
+                            ElbowLeftPosition = joints[JointType.ElbowLeft].Position;
                             HandLeftPosition = joints[JointType.HandLeft].Position;
                             HandRightPosition = joints[JointType.HandRight].Position;
                             //===========================================================================
@@ -385,205 +390,118 @@ namespace Microsoft.Samples.Kinect.BodyBasics
                                 DepthSpacePoint depthSpacePoint = this.coordinateMapper.MapCameraPointToDepthSpace(position);
                                 jointPoints[jointType] = new Point(depthSpacePoint.X, depthSpacePoint.Y);
                             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                            /*
-                            //===========================================================
-                            //System.Console.WriteLine("{0}", SpinShoulderPosition.Y);
-
-                            int step = 15;
-                            if (SpinShoulderPosition.X - HandLeftPosition.X > 0.5)
-                            {
-                                //System.Console.WriteLine("good, S: {0}, H{1}",SpinShoulderPosition.X,HandLeftPosition.X);
-                                s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.VK_A);
-                                //s.Mouse.MoveMouseBy(-step, 0);
-                            }
-                            else if (SpinShoulderPosition.X - HandLeftPosition.X < 0.2)
-                            {
-                                //System.Console.WriteLine("bad, S: {0}, H{1}",SpinShoulderPosition.X,HandLeftPosition.X);
-                                s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.VK_D);
-                                //s.Mouse.MoveMouseBy(step, 0);
-                            }
-                            if (SpinShoulderPosition.Y - HandLeftPosition.Y > -0.03)
-                            {
-                                //System.Console.WriteLine("good, S: {0}, H{1}",SpinShoulderPosition.Y,HandLeftPosition.Y);
-                                s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.VK_S);
-                                //s.Mouse.MoveMouseBy(0, step);
-                            }
-                            else if (SpinShoulderPosition.Y - HandLeftPosition.Y < -0.25)
-                            {
-                                //System.Console.WriteLine("bad, S: {0}, H{1}",SpinShoulderPosition.Y,HandLeftPosition.Y);
-                                s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.VK_W);
-                                //s.Mouse.MoveMouseBy(0, -step);
-                            }
-                            if (SpinShoulderPosition.X - HandRightPosition.X < -0.5)
-                            {
-                                //System.Console.WriteLine("good, S: {0}, H{1}",SpinShoulderPosition.X,HandLeftPosition.X);
-                                //s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.VK_A);
-                                s.Mouse.MoveMouseBy(-step, 0);
-                            }
-                            else if (SpinShoulderPosition.X - HandRightPosition.X > -0.2)
-                            {
-                                //System.Console.WriteLine("bad, S: {0}, H{1}",SpinShoulderPosition.X,HandLeftPosition.X);
-                                //s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.VK_D);
-                                s.Mouse.MoveMouseBy(step, 0);
-                            }
-                            if (SpinShoulderPosition.Y - HandRightPosition.Y > -0.03)
-                            {
-                                //System.Console.WriteLine("good, S: {0}, H{1}",SpinShoulderPosition.Y,HandLeftPosition.Y);
-                                //s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.VK_S);
-                                s.Mouse.MoveMouseBy(0, step);
-                            }
-                            else if (SpinShoulderPosition.Y - HandRightPosition.Y < -0.25)
-                            {
-                                //System.Console.WriteLine("bad, S: {0}, H{1}",SpinShoulderPosition.Y,HandLeftPosition.Y);
-                                //s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.VK_W);
-                                s.Mouse.MoveMouseBy(0, -step);
-                            }
-                            if (SpinShoulderPosition.Y > 0.01)
-                            {
-                                s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.SPACE);
-                                System.Console.WriteLine("jump");
-                            }
-                            //===========================================================
-                            */
-
-
-                            //===========================================================
-                            //System.Console.WriteLine("{0}", SpinShoulderPosition.Y);
-
-                            int step = 15;
-                            if (SpinShoulderPosition.X - HandLeftPosition.X > 0.5)
-                            {
-                                //System.Console.WriteLine("good, S: {0}, H{1}",SpinShoulderPosition.X,HandLeftPosition.X);
-                                s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_D);
-                                s.Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.VK_A);
-                                //s.Mouse.MoveMouseBy(-step, 0);
-                            }
-                            else if (SpinShoulderPosition.X - HandLeftPosition.X < 0.2)
-                            {
-                                //System.Console.WriteLine("bad, S: {0}, H{1}",SpinShoulderPosition.X,HandLeftPosition.X);
-                                s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_A);
-                                s.Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.VK_D);
-                                //s.Mouse.MoveMouseBy(step, 0);
-                            }
-                            else
-                            {
-                                s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_A);
-                                s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_D);
-                            }
-                            if (SpinShoulderPosition.Y - HandLeftPosition.Y > -0.03)
-                            {
-                                //System.Console.WriteLine("good, S: {0}, H{1}",SpinShoulderPosition.Y,HandLeftPosition.Y);
-                                s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_W);
-                                s.Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.VK_S);
-                                //s.Mouse.MoveMouseBy(0, step);
-                            }
-                            else if (SpinShoulderPosition.Y - HandLeftPosition.Y < -0.25)
-                            {
-                                //System.Console.WriteLine("bad, S: {0}, H{1}",SpinShoulderPosition.Y,HandLeftPosition.Y);
-                                s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_S);
-                                s.Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.VK_W);
-                                //s.Mouse.MoveMouseBy(0, -step);
-                            }
-                            else
-                            {
-                                s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_S);
-                                s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_W);
-                            }
-                            if (SpinShoulderPosition.X - HandRightPosition.X < -0.5)
-                            {
-                                //System.Console.WriteLine("good, S: {0}, H{1}",SpinShoulderPosition.X,HandLeftPosition.X);
-                                //s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.VK_A);
-                                s.Mouse.MoveMouseBy(-step, 0);
-                            }
-                            else if (SpinShoulderPosition.X - HandRightPosition.X > -0.2)
-                            {
-                                //System.Console.WriteLine("bad, S: {0}, H{1}",SpinShoulderPosition.X,HandLeftPosition.X);
-                                //s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.VK_D);
-                                s.Mouse.MoveMouseBy(step, 0);
-                            }
-                            if (SpinShoulderPosition.Y - HandRightPosition.Y > -0.03)
-                            {
-                                //System.Console.WriteLine("good, S: {0}, H{1}",SpinShoulderPosition.Y,HandLeftPosition.Y);
-                                //s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.VK_S);
-                                s.Mouse.MoveMouseBy(0, -step);
-                            }
-                            else if (SpinShoulderPosition.Y - HandRightPosition.Y < -0.25)
-                            {
-                                //System.Console.WriteLine("bad, S: {0}, H{1}",SpinShoulderPosition.Y,HandLeftPosition.Y);
-                                //s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.VK_W);
-                                s.Mouse.MoveMouseBy(0, step);
-                            }
-                            if (SpinShoulderPosition.Y > 0.01)
-                            {
-                                s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.SPACE);
-                                //System.Console.WriteLine("jump");
-                            }
-                            //===========================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                            this.DrawBody(joints, jointPoints, dc, drawPen);
-
-                            if (body.HandLeftState == HandState.Closed)
-                            {
-                                //System.Console.WriteLine("left");
-                                s.Mouse.LeftButtonDown();
-                            }
-                            else
-                            {
-                                s.Mouse.LeftButtonUp();
-                            }
-                            if (body.HandRightState == HandState.Closed)
-                            {
-                                //System.Console.WriteLine("right");
-                                s.Mouse.RightButtonDown();
-                            }
-                            else
-                            {
-                                s.Mouse.RightButtonUp();
-                            }
-
                             this.DrawHand(body.HandLeftState, jointPoints[JointType.HandLeft], dc);
                             this.DrawHand(body.HandRightState, jointPoints[JointType.HandRight], dc);
+                            this.DrawBody(joints, jointPoints, dc, drawPen);
+                            //==========================================================
+                            //System.Console.WriteLine("{0}", SpinShoulderPosition.Y);
+                            bool triggered = false;
+                            if (body.HandLeftState == HandState.Open || body.HandRightState == HandState.Open ||
+                                body.HandLeftState == HandState.Closed || body.HandRightState == HandState.Closed)
+                            {
+                                triggered = true;
+                            }
+                            if (triggered)
+                            {
+                                int step = 15;
+                                if (ElbowLeftPosition.X - HandLeftPosition.X > 0.2)
+                                {
+                                    //System.Console.WriteLine("good, S: {0}, H{1}",SpinShoulderPosition.X,HandLeftPosition.X);
+                                    s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_D);
+                                    s.Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.VK_A);
+                                    //s.Mouse.MoveMouseBy(-step, 0);
+                                }
+                                else if (ElbowLeftPosition.X - HandLeftPosition.X  < -0.2)
+                                {
+                                    //System.Console.WriteLine("bad, S: {0}, H{1}",SpinShoulderPosition.X,HandLeftPosition.X);
+                                    s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_A);
+                                    s.Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.VK_D);
+                                    //s.Mouse.MoveMouseBy(step, 0);
+                                }
+                                else
+                                {
+                                    s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_A);
+                                    s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_D);
+                                }
+                                if (SpinShoulderPosition.Z - HandLeftPosition.Z > 0.2)
+                                {
+                                    //System.Console.WriteLine("good, S: {0}, H{1}",SpinShoulderPosition.Y,HandLeftPosition.Y);
+                                    s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_W);
+                                    s.Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.VK_S);
+                                    //s.Mouse.MoveMouseBy(0, step);
+                                }
+                                else if (SpinShoulderPosition.Z - HandLeftPosition.Z < -0.2)
+                                {
+                                    //System.Console.WriteLine("bad, S: {0}, H{1}",SpinShoulderPosition.Y,HandLeftPosition.Y);
+                                    s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_S);
+                                    s.Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.VK_W);
+                                    //s.Mouse.MoveMouseBy(0, -step);
+                                }
+                                else
+                                {
+                                    s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_S);
+                                    s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_W);
+                                }
+                                if (ElbowRightPosition.X - HandRightPosition.X > 0.2)
+                                {
+                                    //System.Console.WriteLine("good, S: {0}, H{1}",SpinShoulderPosition.X,HandLeftPosition.X);
+                                    //s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.VK_A);
+                                    s.Mouse.MoveMouseBy(-step, 0);
+                                }
+                                else if (ElbowRightPosition.X - HandRightPosition.X < -0.2)
+                                {
+                                    //System.Console.WriteLine("bad, S: {0}, H{1}",SpinShoulderPosition.X,HandLeftPosition.X);
+                                    //s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.VK_D);
+                                    s.Mouse.MoveMouseBy(step, 0);
+                                }
+                                if (SpinShoulderPosition.Y - HandRightPosition.Y > -0.03)
+                                {
+                                    //System.Console.WriteLine("good, S: {0}, H{1}",SpinShoulderPosition.Y,HandLeftPosition.Y);
+                                    //s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.VK_S);
+                                    s.Mouse.MoveMouseBy(0, -step);
+                                }
+                                else if (SpinShoulderPosition.Y - HandRightPosition.Y < -0.25)
+                                {
+                                    //System.Console.WriteLine("bad, S: {0}, H{1}",SpinShoulderPosition.Y,HandLeftPosition.Y);
+                                    //s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.VK_W);
+                                    s.Mouse.MoveMouseBy(0, step);
+                                }
+                                if (SpinShoulderPosition.Y > 0.01)
+                                {
+                                    s.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.SPACE);
+                                    //System.Console.WriteLine("jump");
+                                }
+                                //==========================================================
+                                if (body.HandLeftState == HandState.Closed)
+                                {
+                                    //System.Console.WriteLine("left");
+                                    s.Mouse.LeftButtonDown();
+                                }
+                                else
+                                {
+                                    s.Mouse.LeftButtonUp();
+                                }
+                                if (body.HandRightState == HandState.Closed)
+                                {
+                                    //System.Console.WriteLine("right");
+                                    s.Mouse.RightButtonDown();
+                                }
+                                else
+                                {
+                                    s.Mouse.RightButtonUp();
+                                }
+                            }
+                            else
+                            {
+                                s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_S);
+                                s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_W);
+                                s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_A);
+                                s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_D);
+                                s.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.SPACE);
+                                s.Mouse.LeftButtonUp();
+                                s.Mouse.RightButtonUp();
+                            }
+                            
                         }
                     }
 
